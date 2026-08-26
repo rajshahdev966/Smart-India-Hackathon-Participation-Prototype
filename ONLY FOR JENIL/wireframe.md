@@ -313,7 +313,7 @@ Read Journal →
 
 ---
 
-## SECTION 09 — INSTAGRAM GALLERY 8888888888888888888888888888888888888888888888
+## SECTION 09 — INSTAGRAM GALLERY  
 
 Pinterest Style Masonry Grid
 
@@ -344,8 +344,6 @@ Includes
 
 
 # FOOTER
-
-Logo
 
 Tagline
 
