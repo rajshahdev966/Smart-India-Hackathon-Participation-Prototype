@@ -1,22 +1,32 @@
 /**
  * @file Sidebar.jsx
  * @layer shared/ui
- * @description Application sidebar component with responsive collapsible drawer for mobile and navigation links.
+ * @description Application sidebar component matching KarmaLearn Dashboard (Screenshot 3).
  */
 
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { Home, BookOpen, BarChart3, PieChart, ShieldCheck, X } from 'lucide-react';
+import { NavLink, Link } from 'react-router-dom';
+import {
+  Landmark,
+  Sparkles,
+  BookOpen,
+  User,
+  Settings,
+  HelpCircle,
+  X,
+  Bot,
+  BarChart3,
+} from 'lucide-react';
 import { useAppContext } from '@/context/AppContext';
 
 export const Sidebar = () => {
   const { isSidebarOpen, toggleSidebar } = useAppContext();
 
-  const links = [
-    { to: '/', label: 'Overview', icon: Home, end: true },
-    { to: '/quiz', label: 'Start Assessment', icon: BookOpen },
-    { to: '/analysis', label: 'Last Assessment', icon: BarChart3 },
-    { to: '/total-analysis', label: 'Overall Analytics', icon: PieChart },
+  const mainLinks = [
+    { to: '/dashboard', label: 'Recommendations', icon: Sparkles, end: true },
+    { to: '/quiz', label: 'Learning Materials', icon: BookOpen },
+    { to: '/analysis', label: 'Recent Diagnostics', icon: BarChart3 },
+    { to: '/total-analysis', label: 'Profile & Framework', icon: User },
   ];
 
   return (
@@ -39,15 +49,35 @@ export const Sidebar = () => {
           <div>
             {/* Mobile Close Button */}
             <div className="flex items-center justify-between pb-3 md:hidden border-b border-slate-100 mb-3">
-              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Navigation</span>
-              <button onClick={toggleSidebar} className="p-1 rounded text-slate-500 hover:bg-slate-100">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                Menu
+              </span>
+              <button
+                onClick={toggleSidebar}
+                className="p-1 rounded text-slate-500 hover:bg-slate-100"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Menu items */}
+            {/* National Portal Brand Item (Screenshot 3 top of sidebar) */}
+            <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 mb-4 flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center shrink-0">
+                <Landmark className="w-5 h-5" />
+              </div>
+              <div className="overflow-hidden">
+                <div className="font-bold text-xs text-slate-900 leading-tight truncate">
+                  National Portal
+                </div>
+                <div className="text-[10px] text-slate-500 font-medium truncate">
+                  Competency Framework
+                </div>
+              </div>
+            </div>
+
+            {/* Navigation Menu Items */}
             <div className="space-y-1">
-              {links.map((link) => {
+              {mainLinks.map((link) => {
                 const Icon = link.icon;
                 return (
                   <NavLink
@@ -56,9 +86,9 @@ export const Sidebar = () => {
                     end={link.end}
                     onClick={() => isSidebarOpen && toggleSidebar()}
                     className={({ isActive }) =>
-                      `flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                      `flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-xs font-semibold transition-all ${
                         isActive
-                          ? 'bg-indigo-50 text-indigo-700 font-semibold'
+                          ? 'bg-sky-50 text-sky-700 border-l-3 border-sky-600 font-bold'
                           : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                       }`
                     }
@@ -69,17 +99,30 @@ export const Sidebar = () => {
                 );
               })}
             </div>
+
+            {/* AI Test Generator Pill Button (Screenshot 3) */}
+            <div className="mt-5">
+              <Link
+                to="/quiz"
+                onClick={() => isSidebarOpen && toggleSidebar()}
+                className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-[#0F2942] hover:bg-[#1E3A5F] text-white text-xs font-bold shadow-xs transition-colors"
+              >
+                <Bot className="w-4 h-4 text-sky-400" />
+                <span>AI Test Generator</span>
+              </Link>
+            </div>
           </div>
 
-          {/* System Badge in Sidebar Footer */}
-          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/70">
-            <div className="flex items-center gap-2 text-indigo-700 font-semibold text-xs mb-1">
-              <ShieldCheck className="w-4 h-4 text-indigo-600" />
-              <span>SIH 2026 Engine</span>
-            </div>
-            <p className="text-[11px] text-slate-500 leading-relaxed">
-              4-Layer modular architecture with automated competency evaluations.
-            </p>
+          {/* Bottom Settings & Support (Screenshot 3) */}
+          <div className="border-t border-slate-100 pt-3 space-y-1 text-xs">
+            <button className="w-full flex items-center gap-3 px-3 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors text-left">
+              <Settings className="w-4 h-4 text-slate-400" />
+              <span>Settings</span>
+            </button>
+            <button className="w-full flex items-center gap-3 px-3 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors text-left">
+              <HelpCircle className="w-4 h-4 text-slate-400" />
+              <span>Support</span>
+            </button>
           </div>
         </div>
       </aside>

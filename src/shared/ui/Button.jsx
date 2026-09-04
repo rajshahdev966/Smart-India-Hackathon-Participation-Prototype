@@ -23,9 +23,10 @@ export const Button = ({
 
   // Variant color definitions
   const variants = {
-    primary: 'bg-indigo-600 hover:bg-indigo-700 text-white focus:ring-indigo-500 shadow-sm',
+    primary: 'bg-sky-600 hover:bg-sky-700 text-white focus:ring-sky-500 shadow-sm',
+    navy: 'bg-[#0F2942] hover:bg-[#1E3A5F] text-white focus:ring-slate-500 shadow-sm',
     secondary: 'bg-slate-100 hover:bg-slate-200 text-slate-800 focus:ring-slate-400',
-    outline: 'border border-slate-300 hover:bg-slate-50 text-slate-700 focus:ring-indigo-500',
+    outline: 'border border-slate-300 hover:bg-slate-50 text-slate-700 focus:ring-sky-500',
     danger: 'bg-rose-600 hover:bg-rose-700 text-white focus:ring-rose-500 shadow-sm',
     success: 'bg-emerald-600 hover:bg-emerald-700 text-white focus:ring-emerald-500 shadow-sm',
     ghost: 'hover:bg-slate-100 text-slate-600 focus:ring-slate-300',
