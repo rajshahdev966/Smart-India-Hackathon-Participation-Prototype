@@ -7,6 +7,7 @@
 
 import axiosInstance from '@/config/axiosInstance';
 import { MOCK_SINGLE_ANALYSIS, simulateNetworkDelay } from '@/shared/api/mockData';
+import { validateQuizAnalysisPayload } from '@/shared/utils/security';
 
 /**
  * Fetches analysis details for a given quiz attempt.
@@ -25,7 +26,11 @@ export const getQuizAnalysisApi = async (quizId = 'quiz_tech_assessment_01') => 
     const savedAnalysis = localStorage.getItem('sih_latest_quiz_analysis');
     if (savedAnalysis) {
       try {
-        return JSON.parse(savedAnalysis);
+        const parsed = JSON.parse(savedAnalysis);
+        if (validateQuizAnalysisPayload(parsed)) {
+          return parsed;
+        }
+        console.warn('Storage security: Malformed or tampered quiz analysis detected, falling back');
       } catch (e) {
         console.warn('Failed to parse saved analysis, falling back to mock data');
       }

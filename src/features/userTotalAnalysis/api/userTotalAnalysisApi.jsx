@@ -7,6 +7,7 @@
 
 import axiosInstance from '@/config/axiosInstance';
 import { MOCK_TOTAL_ANALYSIS, simulateNetworkDelay } from '@/shared/api/mockData';
+import { validateUserTotalAnalysisPayload } from '@/shared/utils/security';
 
 /**
  * Fetches the user's cumulative analytics across all historical assessments.
@@ -25,7 +26,11 @@ export const getUserTotalAnalysisApi = async (userId = 'usr_101') => {
     const savedTotal = localStorage.getItem('sih_user_total_analysis');
     if (savedTotal) {
       try {
-        return JSON.parse(savedTotal);
+        const parsed = JSON.parse(savedTotal);
+        if (validateUserTotalAnalysisPayload(parsed)) {
+          return parsed;
+        }
+        console.warn('Storage security: Malformed or tampered cumulative analysis, falling back');
       } catch (e) {
         console.warn('Failed to parse saved total analysis, falling back');
       }

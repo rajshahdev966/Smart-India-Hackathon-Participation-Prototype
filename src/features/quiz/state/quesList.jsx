@@ -90,6 +90,15 @@ export const quizSlice = createSlice({
       state.submissionResult = null;
       state.error = null;
     },
+    // Load custom AI-generated questions from uploaded learning material
+    loadCustomQuestions: (state, action) => {
+      state.questions = action.payload;
+      state.currentIndex = 0;
+      state.userAnswers = {};
+      state.markedForReview = [];
+      state.submissionResult = null;
+      state.error = null;
+    },
   },
 });
 
@@ -105,6 +114,7 @@ export const {
   submitQuizSuccess,
   submitQuizFailure,
   resetQuizSession,
+  loadCustomQuestions,
 } = quizSlice.actions;
 
 // Selectors

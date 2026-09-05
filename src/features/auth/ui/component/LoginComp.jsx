@@ -245,6 +245,17 @@ export const LoginComp = ({ onSubmit, isLoading, errorMessage }) => {
               <span>Login</span>
             )}
           </button>
+
+          {/* 1-Click Demo Login for quick reviewer testing */}
+          <button
+            type="button"
+            onClick={() => onSubmit({ email: 'alex.johnson@example.com', password: 'password123' })}
+            disabled={isLoading}
+            className="w-full py-2 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5"
+          >
+            <ShieldCheck className="w-3.5 h-3.5 text-sky-600" />
+            <span>1-Click Demo Sign-In (Alex Johnson)</span>
+          </button>
         </form>
       </div>
     </div>

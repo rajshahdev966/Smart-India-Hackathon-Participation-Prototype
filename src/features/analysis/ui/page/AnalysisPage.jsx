@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { useAnalysis } from '../../hooks/useAnalysis';
 import PerformanceChartComp from '../comp/PerformanceChartComp';
+import SkillSplitChartComp from '../comp/SkillSplitChartComp';
 import Card, { CardHeader, CardBody } from '@/shared/ui/Card';
 import Badge from '@/shared/ui/Badge';
 import Button from '@/shared/ui/Button';
@@ -33,6 +34,49 @@ export const AnalysisPage = () => {
       </div>
     );
   }
+
+  // Fallback diagnostic data if legacy stored analysis object is present
+  const proficiency =
+    analysis.proficiencyLevel ||
+    (analysis.scorePercentage >= 90
+      ? 'Expert'
+      : analysis.scorePercentage >= 75
+      ? 'Proficient'
+      : analysis.scorePercentage >= 60
+      ? 'Competent'
+      : analysis.scorePercentage >= 40
+      ? 'Developing'
+      : 'Novice');
+
+  const defaultStrengths = [
+    'Data Structures & Algorithms (Balanced Tree Traversal and Big-O Complexity)',
+    'Web Architecture & Protocols (HTTP Authentication Standards)',
+    'Database Management Systems (ACID Transaction Concurrency & Isolation)',
+  ];
+
+  const defaultGaps = [
+    'Operating Systems (Coffman Deadlock Conditions & Resource Preemption)',
+  ];
+
+  const strengthsList =
+    analysis.strengths && analysis.strengths.length > 0
+      ? analysis.strengths
+      : defaultStrengths;
+
+  const gapsList =
+    analysis.knowledgeGaps && analysis.knowledgeGaps.length > 0
+      ? analysis.knowledgeGaps
+      : defaultGaps;
+
+  const timeManagementText =
+    analysis.timeManagement ||
+    `The student maintained an active answering pace, averaging ${
+      analysis.averageTimePerQuestionSeconds || 45
+    } seconds per question across all items. Deliberation on conceptual problems reflected focused attention, with opportunities to improve velocity on complex scenario-based items.`;
+
+  const remediationText =
+    analysis.remediationPlan ||
+    'Focus on revisiting core foundational material, starting with identified conceptual gaps. The student needs to slow down, thoroughly read questions and scenario contexts, and practice identifying how core principles apply to practical scenarios before attempting further assessments.';
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
@@ -63,74 +107,87 @@ export const AnalysisPage = () => {
         </div>
       </div>
 
-      {/* KPI Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        {/* Score Card */}
-        <Card className="p-5">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 uppercase">Score</span>
-            <div className="w-9 h-9 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
-              <Award className="w-5 h-5" />
-            </div>
-          </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-3xl font-bold text-slate-900">{analysis.scorePercentage}%</span>
-            <span className="text-xs text-emerald-600 font-semibold">Passed</span>
-          </div>
-          <p className="text-xs text-slate-500 mt-1">
-            {analysis.correctAnswers} of {analysis.totalQuestions} questions correct
-          </p>
-        </Card>
-
-        {/* Accuracy Card */}
-        <Card className="p-5">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 uppercase">Accuracy</span>
-            <div className="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-              <Target className="w-5 h-5" />
-            </div>
-          </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-3xl font-bold text-slate-900">{analysis.accuracy}%</span>
-          </div>
-          <p className="text-xs text-slate-500 mt-1">Overall question precision</p>
-        </Card>
-
-        {/* Total Time Card */}
-        <Card className="p-5">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 uppercase">Time Spent</span>
-            <div className="w-9 h-9 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
-              <Clock className="w-5 h-5" />
-            </div>
-          </div>
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-3xl font-bold text-slate-900">
-              {Math.floor(analysis.totalTimeSpentSeconds / 60)}m {analysis.totalTimeSpentSeconds % 60}s
-            </span>
-          </div>
-          <p className="text-xs text-slate-500 mt-1">
-            Avg {analysis.averageTimePerQuestionSeconds}s per question
-          </p>
-        </Card>
-
-        {/* Breakdown Card */}
-        <Card className="p-5">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 uppercase">Result Stats</span>
-            <div className="w-9 h-9 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center">
-              <CheckCircle2 className="w-5 h-5" />
-            </div>
-          </div>
-          <div className="mt-3 flex items-center gap-3 text-xs font-semibold">
-            <span className="text-emerald-600">✓ {analysis.correctAnswers} Correct</span>
-            <span className="text-rose-600">✕ {analysis.incorrectAnswers} Incorrect</span>
-          </div>
-          <p className="text-xs text-slate-500 mt-1">Zero unattempted items</p>
-        </Card>
+      {/* OVERALL PROFICIENCY BANNER (Screenshot 1) */}
+      <div className="bg-[#FEF9C3] border border-[#FDE047]/80 rounded-2xl p-7 text-center shadow-xs">
+        <span className="text-xs font-extrabold text-[#854D0E] tracking-widest uppercase">
+          OVERALL PROFICIENCY
+        </span>
+        <h2 className="text-3xl sm:text-4xl font-black text-[#713F12] tracking-tight my-1.5">
+          {proficiency}
+        </h2>
+        <p className="text-sm font-bold text-[#854D0E]/90">
+          Score: {analysis.correctAnswers}/{analysis.totalQuestions}
+        </p>
       </div>
 
-      {/* Visual Chart Card */}
+      {/* 2x2 DIAGNOSTIC INSIGHTS GRID (Screenshot 1) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Card 1: Skill Split */}
+        <div className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col justify-between">
+          <div>
+            <h3 className="text-base font-bold text-slate-900 mb-1">
+              Skill Split
+            </h3>
+            <div className="w-full h-px bg-slate-100 mb-4"></div>
+          </div>
+          <SkillSplitChartComp skillSplit={analysis.skillSplit} />
+        </div>
+
+        {/* Card 2: Time Management */}
+        <div className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col">
+          <h3 className="text-base font-bold text-slate-900 mb-1">
+            Time Management
+          </h3>
+          <div className="w-full h-px bg-slate-100 mb-4"></div>
+          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            {timeManagementText}
+          </p>
+        </div>
+
+        {/* Card 3: Strengths */}
+        <div className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col">
+          <h3 className="text-base font-bold text-emerald-700 mb-1">
+            Strengths
+          </h3>
+          <div className="w-full h-px bg-slate-100 mb-4"></div>
+          <ul className="space-y-3 text-xs sm:text-sm text-slate-700">
+            {strengthsList.map((item, idx) => (
+              <li key={idx} className="flex items-start gap-2.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0 mt-1.5"></span>
+                <span className="leading-snug">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Card 4: Knowledge Gaps */}
+        <div className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col">
+          <h3 className="text-base font-bold text-rose-600 mb-1">
+            Knowledge Gaps
+          </h3>
+          <div className="w-full h-px bg-slate-100 mb-4"></div>
+          <ul className="space-y-3 text-xs sm:text-sm text-slate-700">
+            {gapsList.map((item, idx) => (
+              <li key={idx} className="flex items-start gap-2.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0 mt-1.5"></span>
+                <span className="leading-snug">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* RECOMMENDED REMEDIATION PLAN (Screenshot 1) */}
+      <div className="bg-[#EFF6FF] border border-[#BFDBFE] rounded-2xl p-6 shadow-xs">
+        <h3 className="text-sm font-extrabold text-[#1E3A8A] mb-2">
+          Recommended Remediation Plan
+        </h3>
+        <p className="text-xs sm:text-sm text-[#1E40AF] leading-relaxed">
+          {remediationText}
+        </p>
+      </div>
+
+      {/* Subject Category Proficiency (Screenshot 2 - with fixed non-clipping X-axis) */}
       <Card>
         <CardHeader
           title="Subject Category Proficiency"

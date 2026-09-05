@@ -6,13 +6,13 @@
 
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Search, Bell, Menu, LogOut, ExternalLink, User } from 'lucide-react';
+import { Search, Bell, Menu, LogOut, ExternalLink, User, Globe, Sparkles } from 'lucide-react';
 import { useAuth } from '@/features/auth/hooks/authHooks';
 import { useAppContext } from '@/context/AppContext';
 
 export const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
-  const { toggleSidebar } = useAppContext();
+  const { toggleSidebar, language, toggleLanguage, t } = useAppContext();
   const navigate = useNavigate();
   const location = useLocation();
   const [showUserDropdown, setShowUserDropdown] = useState(false);
@@ -23,12 +23,12 @@ export const Navbar = () => {
   };
 
   const navItems = [
-    { label: 'Dashboard', path: '/dashboard' },
-    { label: 'Courses', path: '/#courses' },
-    { label: 'My Learning', path: '/dashboard' },
-    { label: 'Assessments', path: '/quiz' },
-    { label: 'Tests', path: '/quiz' },
-    { label: 'Competency', path: '/total-analysis' },
+    { label: t('dashboard'), path: '/dashboard' },
+    { label: t('courses'), path: '/#courses' },
+    { label: t('learning'), path: '/dashboard' },
+    { label: t('assessments'), path: '/quiz' },
+    { label: t('competency'), path: '/total-analysis' },
+    { label: t('upload'), path: '/upload' },
   ];
 
   // User initials: e.g. "BC" for Bharat Chetri or "AJ" for Alex Johnson
@@ -107,6 +107,17 @@ export const Navbar = () => {
               className="w-40 md:w-48 pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-sky-500 focus:bg-white transition-all"
             />
           </div>
+
+          {/* Language Switcher (English / हिंदी) */}
+          <button
+            type="button"
+            onClick={toggleLanguage}
+            title="Switch Language / भाषा बदलें"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors cursor-pointer"
+          >
+            <Globe className="w-3.5 h-3.5 text-sky-600" />
+            <span>{language === 'en' ? 'English' : 'हिंदी'}</span>
+          </button>
 
           {/* Bell icon */}
           <button

@@ -7,14 +7,16 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 import { MOCK_USER } from '@/shared/api/mockData';
+import { isValidTokenFormat } from '@/shared/utils/security';
 
-// Initial state checks localStorage for existing session or defaults to demo session
-const initialToken = localStorage.getItem('sih_auth_token') || 'jwt_mock_token_sih2026_authorized_session';
+// Read token from localStorage and validate structure
+const storedToken = localStorage.getItem('sih_auth_token');
+const hasValidSession = Boolean(storedToken && isValidTokenFormat(storedToken));
 
 const initialState = {
-  user: MOCK_USER,
-  token: initialToken,
-  isAuthenticated: true,
+  user: hasValidSession ? MOCK_USER : null,
+  token: hasValidSession ? storedToken : null,
+  isAuthenticated: hasValidSession,
   isLoading: false,
   error: null,
 };
@@ -36,8 +38,10 @@ export const authSlice = createSlice({
       state.user = user;
       state.token = token;
       state.error = null;
-      // Persist token in browser
-      localStorage.setItem('sih_auth_token', token);
+      // Persist valid token in browser
+      if (token && isValidTokenFormat(token)) {
+        localStorage.setItem('sih_auth_token', token);
+      }
     },
     // Authentication failed
     authFailure: (state, action) => {

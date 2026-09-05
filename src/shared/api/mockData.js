@@ -19,7 +19,7 @@ export const MOCK_USER = {
   overallPercentile: 92.4,
 };
 
-export const MOCK_QUESTIONS = [
+export const MOCK_QUESTIONS_WITH_ANSWERS = [
   {
     id: 1,
     topic: 'Data Structures & Algorithms',
@@ -92,6 +92,22 @@ export const MOCK_QUESTIONS = [
   },
 ];
 
+/**
+ * Sanitized questions served to client/test-taker.
+ * Strictly omits 'correctAnswer' and 'explanation' to prevent client-side answer sniffing.
+ */
+export const PUBLIC_QUESTIONS = MOCK_QUESTIONS_WITH_ANSWERS.map(
+  ({ id, topic, difficulty, questionText, options }) => ({
+    id,
+    topic,
+    difficulty,
+    questionText,
+    options,
+  })
+);
+
+export const MOCK_QUESTIONS = PUBLIC_QUESTIONS;
+
 export const MOCK_SINGLE_ANALYSIS = {
   quizId: 'quiz_tech_assessment_01',
   quizTitle: 'Full-Stack Technical Assessment 2026',
@@ -104,12 +120,30 @@ export const MOCK_SINGLE_ANALYSIS = {
   totalTimeSpentSeconds: 245, // 4m 05s
   averageTimePerQuestionSeconds: 49,
   accuracy: 80,
+  proficiencyLevel: 'Proficient',
+  skillSplit: [
+    { skill: 'Theoretical', score: 67 },
+    { skill: 'Application', score: 100 },
+  ],
+  strengths: [
+    'Data Structures & Algorithms (Balanced Tree Traversal & Big-O Complexity)',
+    'Web Architecture & Protocols (HTTP Authentication & Authorization)',
+    'Database Management Systems (ACID Transaction Isolation & Concurrency)',
+    'Computer Networks (Transport Layer Datagrams & Protocol Efficiency)',
+  ],
+  knowledgeGaps: [
+    'Operating Systems (Coffman Deadlock Conditions & Resource Preemption Rules)',
+  ],
+  timeManagement:
+    'The student exhibited a steady and deliberate pace across 4 out of 5 questions, averaging 49 seconds per question. Deliberation on algorithmic and protocol questions resulted in high accuracy, though the extended time spent on Operating Systems (90 seconds) indicates hesitation regarding non-preemption principles.',
+  remediationPlan:
+    'Focus on reinforcing Operating Systems concurrency principles, specifically analyzing deadlock prevention mechanisms and the distinction between preemptible and non-preemptible resources before taking advanced systems assessments.',
   categoryBreakdown: [
-    { category: 'Data Structures', score: 100, fullMark: 100 },
-    { category: 'Web Protocols', score: 100, fullMark: 100 },
-    { category: 'DBMS', score: 100, fullMark: 100 },
+    { category: 'Data Structures & Algorithms', score: 100, fullMark: 100 },
+    { category: 'Web Architecture & Protocols', score: 100, fullMark: 100 },
+    { category: 'Database Management Systems', score: 100, fullMark: 100 },
     { category: 'Operating Systems', score: 0, fullMark: 100 },
-    { category: 'Networks', score: 100, fullMark: 100 },
+    { category: 'Computer Networks', score: 100, fullMark: 100 },
   ],
   questionReviews: [
     {

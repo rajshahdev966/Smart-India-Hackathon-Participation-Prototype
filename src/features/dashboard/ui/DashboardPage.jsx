@@ -144,10 +144,13 @@ export const DashboardPage = () => {
               QUICK ACTIONS
             </span>
             <div className="grid grid-cols-2 gap-3">
-              <button className="flex items-center justify-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:border-sky-500 hover:bg-sky-50/50 text-xs font-semibold text-slate-700 transition-all">
+              <Link
+                to="/upload"
+                className="flex items-center justify-center gap-2 p-2.5 rounded-xl border border-sky-300 bg-sky-50/50 hover:bg-sky-100/70 text-xs font-bold text-sky-800 transition-all shadow-2xs"
+              >
                 <UploadCloud className="w-4 h-4 text-sky-600" />
                 <span>Upload Material</span>
-              </button>
+              </Link>
               <a
                 href="/#courses"
                 className="flex items-center justify-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:border-sky-500 hover:bg-sky-50/50 text-xs font-semibold text-slate-700 transition-all"
@@ -200,27 +203,29 @@ export const DashboardPage = () => {
       </div>
 
       {/* ----------------------------------------------------------------- */}
-      {/* MY COURSES & COMPETENCY GAPS                                      */}
+      {/* MY COURSES & COMPETENCY GAPS (iGOT Verified vs AI Pathways)       */}
       {/* ----------------------------------------------------------------- */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* My Courses */}
         <div className="lg:col-span-5 bg-white rounded-2xl border border-slate-200 p-5 shadow-2xs flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-4 border-b border-slate-100 pb-2.5">
-              <h3 className="font-bold text-slate-900 text-sm sm:text-base">My Courses</h3>
+              <h3 className="font-bold text-slate-900 text-sm sm:text-base">Recommended &amp; Active Courses</h3>
               <a href="/#courses" className="text-xs font-semibold text-sky-600 hover:underline">
                 View All
               </a>
             </div>
 
             <div className="space-y-3.5">
-              {/* Course 1 */}
+              {/* Course 1: Verified iGOT Karmayogi Course */}
               <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
                 <div className="flex items-center justify-between text-xs mb-1">
                   <span className="font-bold text-slate-800">
                     Statistical Data Quality &amp; Validation
                   </span>
-                  <span className="text-[10px] text-slate-500 font-medium">Core Competency</span>
+                  <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold">
+                    iGOT Verified
+                  </span>
                 </div>
                 <div className="flex items-center justify-between text-[11px] text-slate-500 mt-2">
                   <span>Progress</span>
@@ -231,20 +236,22 @@ export const DashboardPage = () => {
                 </div>
               </div>
 
-              {/* Course 2 */}
-              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+              {/* Course 2: AI-Generated Competency Gap Recommendation */}
+              <div className="p-3 rounded-xl bg-sky-50/50 border border-sky-200">
                 <div className="flex items-center justify-between text-xs mb-1">
                   <span className="font-bold text-slate-800">
-                    Digital Governance &amp; Official Statistics
+                    Survey Methodology &amp; Sampling Design
                   </span>
-                  <span className="text-[10px] text-slate-500 font-medium">Advanced</span>
+                  <span className="text-[10px] bg-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded font-bold">
+                    AI Gap Recommendation
+                  </span>
                 </div>
                 <div className="flex items-center justify-between text-[11px] text-slate-500 mt-2">
-                  <span>Progress</span>
-                  <span className="font-bold text-slate-700">15%</span>
+                  <span>Targeted for 40% Gap</span>
+                  <span className="font-bold text-indigo-700">Recommended</span>
                 </div>
                 <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden mt-1">
-                  <div className="h-full bg-sky-600 rounded-full" style={{ width: '15%' }}></div>
+                  <div className="h-full bg-indigo-600 rounded-full" style={{ width: '15%' }}></div>
                 </div>
               </div>
             </div>

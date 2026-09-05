@@ -24,7 +24,7 @@ export const Sidebar = () => {
 
   const mainLinks = [
     { to: '/dashboard', label: 'Recommendations', icon: Sparkles, end: true },
-    { to: '/quiz', label: 'Learning Materials', icon: BookOpen },
+    { to: '/upload', label: 'Learning Materials', icon: BookOpen },
     { to: '/analysis', label: 'Recent Diagnostics', icon: BarChart3 },
     { to: '/total-analysis', label: 'Profile & Framework', icon: User },
   ];
@@ -103,7 +103,7 @@ export const Sidebar = () => {
             {/* AI Test Generator Pill Button (Screenshot 3) */}
             <div className="mt-5">
               <Link
-                to="/quiz"
+                to="/upload"
                 onClick={() => isSidebarOpen && toggleSidebar()}
                 className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-[#0F2942] hover:bg-[#1E3A5F] text-white text-xs font-bold shadow-xs transition-colors"
               >

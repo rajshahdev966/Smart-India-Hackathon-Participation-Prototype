@@ -97,14 +97,74 @@ export const useExamSecurity = ({ isExamActive = true }) => {
       });
     };
 
-    // 3. Prevent accidental tab close or page reload
+    // 3. Prevent Right-Click Context Menu
+    const handleContextMenu = (e) => {
+      e.preventDefault();
+      setSecurityAlert({
+        message: 'Right-click context menu is disabled during the assessment.',
+        timestamp: new Date().toLocaleTimeString(),
+        severity: 'info',
+      });
+    };
+
+    // 4. Prevent text/element drag-and-drop
+    const handleDragStart = (e) => {
+      e.preventDefault();
+    };
+
+    // 5. Block DevTools and Source-Inspection Keyboard Shortcuts
+    const handleKeyDown = (e) => {
+      const isCmdOrCtrl = e.ctrlKey || e.metaKey;
+      const key = e.key;
+      const code = e.code;
+
+      // F12 Developer Tools
+      if (key === 'F12' || code === 'F12') {
+        e.preventDefault();
+        setSecurityAlert({
+          message: 'Developer tools inspection shortcut (F12) is disabled.',
+          timestamp: new Date().toLocaleTimeString(),
+          severity: 'warning',
+        });
+        return;
+      }
+
+      // Ctrl+Shift+I / Cmd+Option+I (Inspect), Ctrl+Shift+J (Console), Ctrl+Shift+C (Inspect Element)
+      if (isCmdOrCtrl && (e.shiftKey || e.altKey) && (code === 'KeyI' || code === 'KeyJ' || code === 'KeyC')) {
+        e.preventDefault();
+        setSecurityAlert({
+          message: 'Developer tools shortcuts are disabled during the assessment.',
+          timestamp: new Date().toLocaleTimeString(),
+          severity: 'warning',
+        });
+        return;
+      }
+
+      // Ctrl+U / Cmd+U (View Page Source)
+      if (isCmdOrCtrl && (code === 'KeyU' || key.toLowerCase() === 'u')) {
+        e.preventDefault();
+        setSecurityAlert({
+          message: 'Source view shortcut is disabled.',
+          timestamp: new Date().toLocaleTimeString(),
+          severity: 'warning',
+        });
+        return;
+      }
+
+      // Ctrl+S / Cmd+S (Save Page) & Ctrl+P / Cmd+P (Print Page)
+      if (isCmdOrCtrl && (code === 'KeyS' || code === 'KeyP' || key.toLowerCase() === 's' || key.toLowerCase() === 'p')) {
+        e.preventDefault();
+      }
+    };
+
+    // 6. Prevent accidental tab close or page reload
     const handleBeforeUnload = (e) => {
       e.preventDefault();
       e.returnValue = 'You have an active examination in progress. Answers may be lost.';
       return e.returnValue;
     };
 
-    // 4. Track fullscreen changes
+    // 7. Track fullscreen changes
     const handleFullscreenChange = () => {
       setIsFullscreen(Boolean(document.fullscreenElement));
     };
@@ -113,6 +173,9 @@ export const useExamSecurity = ({ isExamActive = true }) => {
     document.addEventListener('copy', handleClipboard);
     document.addEventListener('cut', handleClipboard);
     document.addEventListener('paste', handleClipboard);
+    document.addEventListener('contextmenu', handleContextMenu);
+    document.addEventListener('dragstart', handleDragStart);
+    window.addEventListener('keydown', handleKeyDown, true);
     window.addEventListener('beforeunload', handleBeforeUnload);
     document.addEventListener('fullscreenchange', handleFullscreenChange);
 
@@ -121,6 +184,9 @@ export const useExamSecurity = ({ isExamActive = true }) => {
       document.removeEventListener('copy', handleClipboard);
       document.removeEventListener('cut', handleClipboard);
       document.removeEventListener('paste', handleClipboard);
+      document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('dragstart', handleDragStart);
+      window.removeEventListener('keydown', handleKeyDown, true);
       window.removeEventListener('beforeunload', handleBeforeUnload);
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
     };

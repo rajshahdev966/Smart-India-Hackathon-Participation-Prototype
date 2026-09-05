@@ -24,6 +24,7 @@ import QuizPage from '@/features/quiz/ui/page/QuizPage';
 import AnalysisPage from '@/features/analysis/ui/page/AnalysisPage';
 import UserTotalAnalysisPage from '@/features/userTotalAnalysis/ui/page/UserTotalAnalysisPage';
 import DashboardPage from '@/features/dashboard/ui/DashboardPage';
+import MaterialUploadPage from '@/features/materialUpload/ui/page/MaterialUploadPage';
 
 export const router = createBrowserRouter([
   {
@@ -77,6 +78,10 @@ export const router = createBrowserRouter([
       {
         path: '/total-analysis',
         element: <UserTotalAnalysisPage />,
+      },
+      {
+        path: '/upload',
+        element: <MaterialUploadPage />,
       },
     ],
   },
